@@ -11,18 +11,44 @@ app.get('/nueva-ruta', (req, res) => {
 });
 
 app.get('/productos', (req, res) => {
+  res.json([
+    {
+      name: 'producto1',
+      price: 1000,
+    },
+    {
+      name: 'producto2',
+      price: 10000,
+    },
+  ]);
+});
+
+app.get('/products/:id/products', (req, res) => {
+  const { id } = req.params;
   res.json({
-    name: 'producto1',
-    price: 1000,
+    id,
+    name: 'producto2',
+    price: 10000,
   });
 });
 
-app.get('/categories', (req, res) => {
+app.get('/users', (req, res) => {
+  const { limit, offset } = req.query;
+  if (limit && offset) {
+    res.json({
+      limit,
+      offset,
+    });
+  } else {
+    res.send('No hay parámetros');
+  }
+});
+
+app.get('/categories/:categoryId/products/:productId', (req, res) => {
+  const { categoryId, productId } = req.params;
   res.json({
-    category1: 'clothes',
-    category2: 'jewerly',
-    category3: 'electronics',
-    category4: 'videogames',
+    categoryId,
+    productId,
   });
 });
 
