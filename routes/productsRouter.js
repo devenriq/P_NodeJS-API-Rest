@@ -1,12 +1,13 @@
 const express = require('express');
 const ProductService = require('./../services/productService');
+const validatorHandle = require('./../middlewares/validatorHandler');
+const { createProductSchema } = require('./../schemas/productSchema');
 
 const router = express.Router();
 const service = new ProductService();
 
 router.get('/', async (req, res) => {
   const products = await service.find();
-
   res.json(products);
 });
 

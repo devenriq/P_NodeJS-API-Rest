@@ -1,42 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const UserService = require('./../services/usersService');
 
-router.get('/', (req, res) => {
-  const { limit, offset } = req.query;
-  if (limit && offset) {
-    res.json({
-      limit,
-      offset,
-    });
-  } else {
-    res.send('No hay parámetros');
-  }
+const service = new UserService();
+
+router.get('/', async (req, res) => {
+  const users = await service.find();
+  res.json(users);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
-  res.json({
-    message: 'created',
-    data: body,
-  });
+  const newProduct = await service.create(body);
+  res.status(201).json(newProduct);
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
-    message: 'updated',
-    data: body,
-    id,
-  });
+  const product = await service.update(id, body);
+  res.json(product);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  res.json({
-    message: 'deleted',
-    id,
-  });
+  const user = await service.delete(id);
+  res.json(user);
 });
 
 module.exports = router;

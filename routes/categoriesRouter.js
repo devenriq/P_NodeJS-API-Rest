@@ -1,38 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const CategoriesService = require('./../services/categoriesService');
 
-router.get('/', (req, res) => {
-  const { categoryId, productId } = req.params;
-  res.json({
-    categoryId,
-    productId,
-  });
+const service = new CategoriesService();
+
+router.get('/', async (req, res) => {
+  const categories = await service.find();
+  res.json(categories);
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
-  res.json({
-    message: 'created',
-    data: body,
-  });
+  const categories = await service.create(body);
+  res.json(categories);
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const body = req.body;
-  res.json({
-    message: 'updated',
-    data: body,
-    id,
-  });
+  const categories = await service.update(id, body);
+  res.json(categories);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  res.json({
-    message: 'deleted',
-    id,
-  });
+  const categories = await service.delete(id);
+  res.json(categories);
 });
 
 module.exports = router;
