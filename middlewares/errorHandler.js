@@ -1,23 +1,23 @@
-function logErrors(error, req, res, next) {
+function logErrors(err, req, res, next) {
   console.log('logErrors');
-  console.error(error);
-  next(error);
+  console.error(err);
+  next(err);
 }
 
-function errorHandler(error, req, res, next) {
-  console.log('errorHandle');
+function errorHandler(err, req, res, next) {
+  console.log('errorHandler');
   res.status(500).json({
-    message: error.message,
-    stack: error.stack,
+    message: err.message,
+    stack: err.stack,
   });
 }
 
-function boomErrorHandler(error, req, res, next) {
-  if (error.isBoom) {
-    const { output } = error;
+function boomErrorHandler(err, req, res, next) {
+  if (err.isBoom) {
+    const { output } = err;
     res.status(output.statusCode).json(output.payload);
   }
-  next(error);
+  next(err);
 }
 
 module.exports = { logErrors, errorHandler, boomErrorHandler };
